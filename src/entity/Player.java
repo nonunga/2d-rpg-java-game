@@ -31,16 +31,21 @@ public class Player extends Entity {
     }
 
     public void getPlayerImage(){
-        down = loadFrames("down");
-        up = loadFrames("up");
-        right = loadFrames("right");
-        left = loadFrames("left");
+        walkDown = loadFrames("walk", "down", 6);
+        walkUp = loadFrames("walk", "up", 6);
+        walkRight = loadFrames("walk", "right", 6);
+        walkLeft = loadFrames("walk", "left", 6);
+
+        idleDown = loadFrames("idle", "down", 4);
+        idleUp = loadFrames("idle", "up", 4);
+        idleRight = loadFrames("idle", "right", 4);
+        idleLeft = loadFrames("idle", "left", 4);
     }
 
-    private BufferedImage[] loadFrames(String name) {
-        BufferedImage[] frames = new BufferedImage[6];
-        for (int i = 0; i < 6; i++) {
-            String fileName = "/player/walk/walk_" + name + "_" + i + ".png";
+    private BufferedImage[] loadFrames(String state, String dir, int count) {
+        BufferedImage[] frames = new BufferedImage[count];
+        for (int i = 0; i < count; i++) {
+            String fileName = "/player/" + state + "/" + state + "_" + dir + "_" + i + ".png";
             try {
                 InputStream stream = getClass().getResourceAsStream(fileName);
                 if (stream == null) {
@@ -69,28 +74,33 @@ public class Player extends Entity {
             x += speed;
         }
 
-        boolean moving = kh.upIsPressed || kh.downIsPressed || kh.leftIsPressed || kh.rightIsPressed;
+        boolean wasMoving = moving;
+        moving = kh.upIsPressed || kh.downIsPressed || kh.leftIsPressed || kh.rightIsPressed;
 
-        if (moving) {
-            spriteCounter++;
-            if (spriteCounter >= gp.fps / 10) {
-                spriteNum = (spriteNum + 1) % 6;
-                spriteCounter = 0;
-            }
-        } else {
+        // walk and idle have different frame counts, so restart the animation on state change
+        if (moving != wasMoving) {
             spriteNum = 0;
+            spriteCounter = 0;
+        }
+
+        spriteCounter++;
+        if (spriteCounter >= gp.fps / 10) {
+            spriteNum = (spriteNum + 1) % currentFrames().length;
+            spriteCounter = 0;
         }
     }
 
-    public void draw(Graphics2D g2){
-        BufferedImage image = switch (direction) {
-            case "up" -> up[spriteNum];
-            case "down" -> down[spriteNum];
-            case "left" -> left[spriteNum];
-            case "right" -> right[spriteNum];
-            default -> null;
+    private BufferedImage[] currentFrames() {
+        return switch (direction) {
+            case "up" -> moving ? walkUp : idleUp;
+            case "left" -> moving ? walkLeft : idleLeft;
+            case "right" -> moving ? walkRight : idleRight;
+            default -> moving ? walkDown : idleDown;
         };
+    }
 
+    public void draw(Graphics2D g2){
+        BufferedImage image = currentFrames()[spriteNum];
         g2.drawImage(image, (int) x, (int) y, gp.scaledTileSize, gp.scaledTileSize, null);
     }
 
