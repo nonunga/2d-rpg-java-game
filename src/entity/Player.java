@@ -26,7 +26,7 @@ public class Player extends Entity {
         //player default pos
         x = 100;
         y = 100;
-        speed = 300.0 / gp.fps;
+        speed = 250.0 / gp.fps;
         direction = "down";
     }
 
@@ -83,8 +83,10 @@ public class Player extends Entity {
             spriteCounter = 0;
         }
 
+
+        int animFps = moving ? 10 : 4;
         spriteCounter++;
-        if (spriteCounter >= gp.fps / 10) {
+        if (spriteCounter >= gp.fps / animFps) {
             spriteNum = (spriteNum + 1) % currentFrames().length;
             spriteCounter = 0;
         }
