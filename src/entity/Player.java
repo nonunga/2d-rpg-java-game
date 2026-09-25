@@ -77,7 +77,7 @@ public class Player extends Entity {
         boolean wasMoving = moving;
         moving = kh.upIsPressed || kh.downIsPressed || kh.leftIsPressed || kh.rightIsPressed;
 
-        // walk and idle have different frame counts, so restart the animation on state change
+        // different frame counts
         if (moving != wasMoving) {
             spriteNum = 0;
             spriteCounter = 0;
@@ -103,7 +103,11 @@ public class Player extends Entity {
 
     public void draw(Graphics2D g2){
         BufferedImage image = currentFrames()[spriteNum];
-        g2.drawImage(image, (int) x, (int) y, gp.scaledTileSize, gp.scaledTileSize, null);
+        int w = image.getWidth() * gp.scale;
+        int h = image.getHeight() * gp.scale;
+        int drawX = (int) x - (w - gp.scaledTileSize) / 2;
+        int drawY = (int) y - (h - gp.scaledTileSize) / 2;
+        g2.drawImage(image, drawX, drawY, w, h, null);
     }
 
 }
