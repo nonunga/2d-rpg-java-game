@@ -27,7 +27,7 @@ public class Player extends Entity {
         x = 100;
         y = 100;
         speed = 250.0 / gp.fps;
-        direction = "down";
+        direction = Direction.DOWN;
     }
 
     public void getPlayerImage(){
@@ -61,16 +61,16 @@ public class Player extends Entity {
 
     public void update(){
         if (kh.upIsPressed) {
-            direction ="up";
+            direction = Direction.UP;
             y -= speed;
         } else if (kh.downIsPressed) {
-            direction ="down";
+            direction = Direction.DOWN;
             y += speed;
         } else if (kh.leftIsPressed) {
-            direction ="left";
+            direction = Direction.LEFT;
             x -= speed;
         }else if (kh.rightIsPressed){
-            direction ="right";
+            direction = Direction.RIGHT;
             x += speed;
         }
 
@@ -94,9 +94,9 @@ public class Player extends Entity {
 
     private BufferedImage[] currentFrames() {
         return switch (direction) {
-            case "up" -> moving ? walkUp : idleUp;
-            case "left" -> moving ? walkLeft : idleLeft;
-            case "right" -> moving ? walkRight : idleRight;
+            case Direction.UP -> moving ? walkUp : idleUp;
+            case Direction.LEFT -> moving ? walkLeft : idleLeft;
+            case Direction.RIGHT -> moving ? walkRight : idleRight;
             default -> moving ? walkDown : idleDown;
         };
     }
