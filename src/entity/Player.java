@@ -14,18 +14,24 @@ public class Player extends Entity {
 
     GamePanel gp;
     KeyHandler kh;
+    public final int screenX;
+    public final int screenY;
 
     public Player (GamePanel gp, KeyHandler kh){
         this.gp = gp;
         this.kh = kh;
+        /*le resto esa vara pq me centra la imagen usando la esquina izqueirda superior del sprite
+        * entoces hay que restar queda en el centro queda offset.
+        * */
+        this.screenX = gp.screenWidth/2 - (gp.scaledTileSize/2);
+        this.screenY = gp.screenHeight/2 - (gp.scaledTileSize/2);
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues () {
-        //player default pos
-        x = 100;
-        y = 100;
+        worldX = 4 * gp.scaledTileSize;
+        worldY = 7 * gp.scaledTileSize;
         speed = 250.0 / gp.fps;
         direction = Direction.DOWN;
     }
@@ -62,16 +68,16 @@ public class Player extends Entity {
     public void update(){
         if (kh.upIsPressed) {
             direction = Direction.UP;
-            y -= speed;
+            worldY -= speed;
         } else if (kh.downIsPressed) {
             direction = Direction.DOWN;
-            y += speed;
+            worldY += speed;
         } else if (kh.leftIsPressed) {
             direction = Direction.LEFT;
-            x -= speed;
+            worldX -= speed;
         }else if (kh.rightIsPressed){
             direction = Direction.RIGHT;
-            x += speed;
+            worldX += speed;
         }
 
         boolean wasMoving = moving;
@@ -105,9 +111,9 @@ public class Player extends Entity {
         BufferedImage image = currentFrames()[spriteNum];
         int w = image.getWidth() * gp.scale;
         int h = image.getHeight() * gp.scale;
-        int drawX = (int) x - (w - gp.scaledTileSize) / 2;
-        int drawY = (int) y - (h - gp.scaledTileSize) / 2;
-        g2.drawImage(image, drawX, drawY, w, h, null);
+        int x = screenX - (w - gp.scaledTileSize) / 2;
+        int y = screenY - (h - gp.scaledTileSize) / 2;
+        g2.drawImage(image, x, y, w, h, null);
     }
 
 }
