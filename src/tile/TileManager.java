@@ -172,8 +172,8 @@ public class TileManager {
            //enotnces calculamos el offset. hay que contemplar el screenxy del player q esta en la mitad de la pantalla no en 0,0.
            int worldX = worldCol * gp.scaledTileSize;
            int worldY = worldRow * gp.scaledTileSize;
-           int screenX = worldX - gp.player.worldX + gp.player.screenX;
-           int screenY = worldY - gp.player.worldY + gp.player.screenY;
+           int screenX = worldX - (int) gp.player.worldX + gp.player.screenX;
+           int screenY = worldY - (int) gp.player.worldY + gp.player.screenY;
 
            g.drawImage(tile[tileNum].image,screenX,screenY,gp.scaledTileSize,gp.scaledTileSize,null);
            worldCol++;
