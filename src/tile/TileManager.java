@@ -40,24 +40,14 @@ public class TileManager {
             InputStream in = getClass().getResourceAsStream(fileName);
             assert in != null;
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-            int col =0;
-            int row =0;
-
-            while (col < gp.maxScreenCol && row < gp.maxScreenRow) {
+            for (int row=0; row < gp.maxScreenRow; row++) {
                 String line = br.readLine();
-                while (col < gp.maxScreenCol){
+                for (int col = 0; col < gp.maxScreenCol; col++) {
                     String[] mapTileData = line.split(" ");
-                    int tileNumType = Integer.parseInt(mapTileData[col]);
-                    mapTileNum[col][row] = tileNumType;
-                    col++;
-                }
-                if(col == gp.maxScreenCol){
-                    col = 0;
-                    row++;
+                    int intTile = Integer.parseInt(mapTileData[col]);
+                    mapTileNum[col][row] = intTile;
                 }
             }
-
             br.close();
 
         } catch (Exception e){
@@ -65,23 +55,11 @@ public class TileManager {
         }
     }
 
-    public void draw(Graphics g){
-       int col = 0;
-       int row = 0;
-       int x = 0;
-       int y = 0;
-
-       while (col < gp.maxScreenCol && row < gp.maxScreenRow) {
-           int tileNum = mapTileNum[col][row];
-           g.drawImage(tile[tileNum].image,x,y,gp.scaledTileSize,gp.scaledTileSize,null);
-           col++;
-           x += gp.scaledTileSize;
-
-           if (col == gp.maxScreenCol) {
-               col = 0;
-               row++;
-               x = 0;
-               y += gp.scaledTileSize;
+    public void draw(Graphics g) {
+       for (int row = 0, y = 0; row < gp.maxScreenRow; row++, y += gp.scaledTileSize) {
+           for (int col = 0, x = 0; col < gp.maxScreenCol; col++, x+= gp.scaledTileSize) {
+               int currentTile = mapTileNum[col][row];
+               g.drawImage(tile[currentTile].image, x, y, gp.scaledTileSize, gp.scaledTileSize, null);
            }
        }
     }
