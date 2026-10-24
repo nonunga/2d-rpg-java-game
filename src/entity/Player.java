@@ -18,11 +18,14 @@ public class Player extends Entity {
     public Player (GamePanel gp, KeyHandler kh){
         this.gp = gp;
         this.kh = kh;
-        setDefaultValues();
+        this.x = 10;
+        this.y = 10;
+        this.speed = 250.0 / gp.fps;
+        this.direction = Direction.DOWN;
         getPlayerImage();
     }
 
-    public void setDefaultValues () {
+    private void setDefaultValues () {
         //player default pos
         x = 100;
         y = 100;
