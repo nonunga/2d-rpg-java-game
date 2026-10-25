@@ -14,19 +14,25 @@ public class Player extends Entity {
 
     GamePanel gp;
     KeyHandler kh;
+    public final int screenX;
+    public final int screenY;
 
     public Player (GamePanel gp, KeyHandler kh){
         this.gp = gp;
         this.kh = kh;
+        //pos del jugador en pantalla no del mundo.
+        this.screenX = gp.screenWidth/2 - (gp.scaledTileSize/2);
+        this.screenY = gp.screenHeight/2 - (gp.scaledTileSize/2);
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues () {
-        //player default pos
-        x = 100;
-        y = 100;
-        speed = 250.0 / gp.fps;
+        //spawn mapa 2
+        // poscicion en el mundo no pantalla
+        worldX = 12 * gp.scaledTileSize;
+        worldY = 27 * gp.scaledTileSize;
+        speed = 300.0 / gp.fps;
         direction = Direction.DOWN;
     }
 
@@ -45,7 +51,7 @@ public class Player extends Entity {
     private BufferedImage[] loadFrames(String state, String dir, int count) {
         BufferedImage[] frames = new BufferedImage[count];
         for (int i = 0; i < count; i++) {
-            String fileName = "/player/" + state + "/" + state + "_" + dir + "_" + i + ".png";
+            String fileName = "/animations/player/" + state + "/" + state + "_" + dir + "_" + i + ".png";
             try {
                 InputStream stream = getClass().getResourceAsStream(fileName);
                 if (stream == null) {
@@ -62,16 +68,16 @@ public class Player extends Entity {
     public void update(){
         if (kh.upIsPressed) {
             direction = Direction.UP;
-            y -= speed;
+            worldY -= speed;
         } else if (kh.downIsPressed) {
             direction = Direction.DOWN;
-            y += speed;
+            worldY += speed;
         } else if (kh.leftIsPressed) {
             direction = Direction.LEFT;
-            x -= speed;
+            worldX -= speed;
         }else if (kh.rightIsPressed){
             direction = Direction.RIGHT;
-            x += speed;
+            worldX += speed;
         }
 
         boolean wasMoving = moving;
@@ -83,7 +89,7 @@ public class Player extends Entity {
             spriteCounter = 0;
         }
 
-
+        //ajuste por la diff de frames del walking y idle animation
         int animFps = moving ? 10 : 4;
         spriteCounter++;
         if (spriteCounter >= gp.fps / animFps) {
@@ -100,14 +106,15 @@ public class Player extends Entity {
             default -> moving ? walkDown : idleDown;
         };
     }
-
+    //el player sprite mide 32x32 y el world tile 16x16
     public void draw(Graphics2D g2){
         BufferedImage image = currentFrames()[spriteNum];
-        int w = image.getWidth() * gp.scale;
-        int h = image.getHeight() * gp.scale;
-        int drawX = (int) x - (w - gp.scaledTileSize) / 2;
-        int drawY = (int) y - (h - gp.scaledTileSize) / 2;
-        g2.drawImage(image, drawX, drawY, w, h, null);
+        int w = image.getWidth() * gp.scale; // 160 con scale en 5
+        int h = image.getHeight() * gp.scale; // 160
+
+        int x = screenX - (w - gp.scaledTileSize) / 2;
+        int y = screenY - (h - gp.scaledTileSize) / 2;
+        g2.drawImage(image, x, y, w, h, null);
     }
 
 }
