@@ -51,7 +51,7 @@ public class Player extends Entity {
     private BufferedImage[] loadFrames(String state, String dir, int count) {
         BufferedImage[] frames = new BufferedImage[count];
         for (int i = 0; i < count; i++) {
-            String fileName = "/player/" + state + "/" + state + "_" + dir + "_" + i + ".png";
+            String fileName = "/animations/player/" + state + "/" + state + "_" + dir + "_" + i + ".png";
             try {
                 InputStream stream = getClass().getResourceAsStream(fileName);
                 if (stream == null) {
