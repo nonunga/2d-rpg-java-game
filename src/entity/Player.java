@@ -20,9 +20,7 @@ public class Player extends Entity {
     public Player (GamePanel gp, KeyHandler kh){
         this.gp = gp;
         this.kh = kh;
-        /*le resto esa vara pq me centra la imagen usando la esquina izqueirda superior del sprite
-        * entoces hay que restar queda en el centro queda offset.
-        * */
+        //pos del jugador en pantalla no del mundo.
         this.screenX = gp.screenWidth/2 - (gp.scaledTileSize/2);
         this.screenY = gp.screenHeight/2 - (gp.scaledTileSize/2);
         setDefaultValues();
@@ -30,9 +28,11 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues () {
+        //spawn mapa 2
+        // poscicion en el mundo no pantalla
         worldX = 12 * gp.scaledTileSize;
         worldY = 27 * gp.scaledTileSize;
-        speed = 250.0 / gp.fps;
+        speed = 300.0 / gp.fps;
         direction = Direction.DOWN;
     }
 
@@ -89,7 +89,7 @@ public class Player extends Entity {
             spriteCounter = 0;
         }
 
-
+        //ajuste por la diff de frames del walking y idle animation
         int animFps = moving ? 10 : 4;
         spriteCounter++;
         if (spriteCounter >= gp.fps / animFps) {
@@ -106,11 +106,12 @@ public class Player extends Entity {
             default -> moving ? walkDown : idleDown;
         };
     }
-
+    //el player sprite mide 32x32 y el world tile 16x16
     public void draw(Graphics2D g2){
         BufferedImage image = currentFrames()[spriteNum];
-        int w = image.getWidth() * gp.scale;
-        int h = image.getHeight() * gp.scale;
+        int w = image.getWidth() * gp.scale; // 160 con scale en 5
+        int h = image.getHeight() * gp.scale; // 160
+
         int x = screenX - (w - gp.scaledTileSize) / 2;
         int y = screenY - (h - gp.scaledTileSize) / 2;
         g2.drawImage(image, x, y, w, h, null);
