@@ -160,36 +160,29 @@ public class TileManager {
     }
 
     public void draw(Graphics g){
-       int worldCol = 0;
-       int worldRow = 0;
+        for (int worldRow = 0; worldRow < gp.maxWorldRow; worldRow++) {
+            for (int worldCol = 0; worldCol < gp.maxWorldCol; worldCol++) {
+                int tileType = mapMatrix[worldCol][worldRow];
 
-       while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
-           int tileType = mapMatrix[worldCol][worldRow];
+                //world pos del tile en pixeles
+                int tileX = worldCol * gp.scaledTileSize;
+                int tileY = worldRow * gp.scaledTileSize;
 
-           //world pos del tile en pixeles
-           int tileX = worldCol * gp.scaledTileSize;
-           int tileY = worldRow * gp.scaledTileSize;
-
-           //screen pos del tile relativo al player
-           int screenX = (tileX - (int) gp.player.worldX) + gp.player.screenX;
-           int screenY = (tileY - (int) gp.player.worldY) + gp.player.screenY;
-           //grid culling-ish
-           //calcula si el tile esta dentro del frame.
-           //usando el spawn de ej: 960px - gp.player.screenX = 360px = borde del frame.
-           //dibujar si tileX > 360px
-           if (tileX > gp.player.worldX - gp.player.screenX &&
-                   tileX < gp.player.worldX + gp.player.screenX &&
-                   tileY > gp.player.worldY - gp.player.screenY &&
-                   tileY < gp.player.worldY + gp.player.screenY){
-               g.drawImage(tiles[tileType].image,screenX,screenY,gp.scaledTileSize,gp.scaledTileSize,null);
-           }
-
-           worldCol++;
-
-           if (worldCol == gp.maxWorldCol) {
-               worldCol = 0;
-               worldRow++;
-           }
-       }
+                //screen pos del tile relativo al player
+                int screenX = (tileX - (int) gp.player.worldX) + gp.player.screenX;
+                int screenY = (tileY - (int) gp.player.worldY) + gp.player.screenY;
+                //grid culling-ish
+                //calcula si el tile esta dentro del frame.
+                //usando el spawn de ej: 960px - gp.player.screenX (600px) = 360px = borde del frame.
+                //dibujar si tileX > 360px
+                //le sumo scaledTileSize para validar donde termina el tile no donde empieza. izq a derech.
+                if (tileX + gp.scaledTileSize > gp.player.worldX - gp.player.screenX &&
+                        tileX - gp.scaledTileSize < gp.player.worldX + gp.player.screenX &&
+                        tileY + gp.scaledTileSize > gp.player.worldY - gp.player.screenY &&
+                        tileY - gp.scaledTileSize < gp.player.worldY + gp.player.screenY){
+                    g.drawImage(tiles[tileType].image,screenX,screenY,gp.scaledTileSize,gp.scaledTileSize,null);
+                }
+            }
+        }
     }
 }
