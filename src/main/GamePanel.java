@@ -79,23 +79,32 @@ public class GamePanel extends JPanel implements Runnable {
         player.update();
     }
 
+    private void drawGameMetrics(Graphics2D g2){
+        g2.setColor(Color.white);
+        g2.setFont(new Font("Arial", Font.BOLD, 20));
+        //FPS
+        g2.drawString("FPS: " + fpsCounter,20,30 );
+        //player pos top right
+        String playerPos = (int) player.worldX + "," + (int) player.worldY;
+        alignTextToRight(g2,playerPos,25);
+        //player tileMatrixPos top right
+        String tileMatrixPos = (int) player.worldX / scaledTileSize + "," + (int) player.worldY / scaledTileSize;
+        alignTextToRight(g2,tileMatrixPos,50);
+    }
+
+    private void alignTextToRight(Graphics2D g2, String text, int y){
+        int textWidth = g2.getFontMetrics().stringWidth(text);
+        int x = screenWidth - textWidth - 12;
+        g2.drawString(text,x,y);
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         tm.draw(g2);
         player.draw(g2);
-        g2.setColor(Color.white);
-        g2.setFont(new Font("Arial", Font.BOLD, 20));
-        g2.drawString("FPS: " + fpsCounter,20,30 );
-        String playerPos = (int) player.worldX + "," + (int) player.worldY;
-        int textWidth = g2.getFontMetrics().stringWidth(playerPos);
-        int textX = screenWidth - textWidth - 12;
-        g2.drawString(playerPos,  textX,30);
-        String tileMatrixPos = (int) player.worldX / scaledTileSize + "," + (int) player.worldY / scaledTileSize;
-        int textWidth2 = g2.getFontMetrics().stringWidth(tileMatrixPos);
-        int textX2 = screenWidth - textWidth2 - 12;
-        g2.drawString(tileMatrixPos, textX2,50);
+        drawGameMetrics(g2);
         g2.dispose();
 
     }
