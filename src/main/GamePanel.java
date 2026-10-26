@@ -18,9 +18,9 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
 
-    public volatile int fps = 144;
+    public int fps = 144;
 
-    private int fpsCounter;
+    private volatile int fpsCounter;
 
     TileManager tm = new TileManager(this);
     KeyHandler kh = new KeyHandler();
