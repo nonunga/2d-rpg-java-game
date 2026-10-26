@@ -61,6 +61,7 @@ public class TileManager {
            for (int col = 0, x = 0; col < gp.maxScreenCol; col++, x+= gp.scaledTileSize) {
                Tile currentTile = mapTiles[col][row];
                g.drawImage(currentTile.image, x, y, gp.scaledTileSize, gp.scaledTileSize, null);
+               g.drawRect(x, y, gp.scaledTileSize, gp.scaledTileSize);
            }
        }
     }

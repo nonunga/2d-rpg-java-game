@@ -1,6 +1,7 @@
 package main;
 
 import entity.Player;
+import tile.Tile;
 import tile.TileManager;
 
 import javax.swing.JPanel;
@@ -43,6 +44,9 @@ public class GamePanel extends JPanel implements Runnable {
         int drawFps = 0;
 
         while (gameThread != null) {
+            Tile currentTile = tm.getTile(player.getPlayerRow(), player.getPlayerCol());
+            System.out.println("Current tile " + currentTile.type);
+
             update();
             repaint();
             drawFps++;
@@ -61,7 +65,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if ((System.nanoTime() - timer) >= 1_000_000_000L){
-                System.out.println("FPS: " + drawFps);
+                System.out.println("player x: " + drawFps);
                 drawFps=0;
                 timer = System.nanoTime();
             }

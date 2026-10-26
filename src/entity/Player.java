@@ -32,13 +32,11 @@ public class Player extends Entity {
         speed = 250.0 / gp.fps;
         direction = Direction.DOWN;
     }
-
     public void getPlayerImage(){
         walkDown = loadFrames("walk", "down", 6);
         walkUp = loadFrames("walk", "up", 6);
         walkRight = loadFrames("walk", "right", 6);
         walkLeft = loadFrames("walk", "left", 6);
-
         idleDown = loadFrames("idle", "down", 4);
         idleUp = loadFrames("idle", "up", 4);
         idleRight = loadFrames("idle", "right", 4);
@@ -63,6 +61,7 @@ public class Player extends Entity {
     }
 
     public void update(){
+
         if (kh.upIsPressed) {
             direction = Direction.UP;
             y -= speed;
@@ -104,6 +103,12 @@ public class Player extends Entity {
         };
     }
 
+    public int getPlayerRow() {
+        return (int)this.y / gp.scaledTileSize;
+    }
+    public int getPlayerCol() {
+        return (int)this.x / gp.scaledTileSize;
+    }
     public void draw(Graphics2D g2){
         BufferedImage image = currentFrames()[spriteNum];
         int w = image.getWidth() * gp.scale;
@@ -111,6 +116,7 @@ public class Player extends Entity {
         int drawX = (int) x - (w - gp.scaledTileSize) / 2;
         int drawY = (int) y - (h - gp.scaledTileSize) / 2;
         g2.drawImage(image, drawX, drawY, w, h, null);
+        g2.drawRect(drawX, drawY, w, h);
     }
 
 }
