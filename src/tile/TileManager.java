@@ -23,7 +23,6 @@ public class TileManager {
     public Tile getTile (int row, int col) {
         return mapTiles[col][row];
     }
-
     public void getTileImage(){
         try {
             tilesArray[0] = new Tile(Tile.Type.GRASS);

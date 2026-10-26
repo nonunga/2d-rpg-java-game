@@ -20,10 +20,14 @@ public class Player extends Entity {
         this.kh = kh;
         this.x = 10;
         this.y = 10;
-        this.speed = 250.0 / gp.fps;
-        this.direction = Direction.DOWN;
+        this.w = 20;
+        this.h = 20;
+
+        this.speed = 250.0 / gp.fps; this.direction = Direction.DOWN;
         getPlayerImage();
     }
+
+    Rect rect = new Rect(300, 300, 100, 100);
 
     private void setDefaultValues () {
         //player default pos
@@ -61,20 +65,27 @@ public class Player extends Entity {
     }
 
     public void update(){
-
-        if (kh.upIsPressed) {
-            direction = Direction.UP;
-            y -= speed;
-        } else if (kh.downIsPressed) {
-            direction = Direction.DOWN;
-            y += speed;
-        } else if (kh.leftIsPressed) {
-            direction = Direction.LEFT;
-            x -= speed;
-        }else if (kh.rightIsPressed){
-            direction = Direction.RIGHT;
-            x += speed;
-        }
+            if (kh.upIsPressed) {
+                direction = Direction.UP;
+                if (!would_colide(rect, 0, -speed)) {
+                    y -= speed;
+                }
+            } else if (kh.downIsPressed) {
+                direction = Direction.DOWN;
+                if (!would_colide(rect, 0, speed)) {
+                    y += speed;
+                }
+            } else if (kh.leftIsPressed) {
+                direction = Direction.LEFT;
+                if (!would_colide(rect, -speed, 0)) {
+                    x -= speed;
+                }
+            }else if (kh.rightIsPressed){
+                direction = Direction.RIGHT;
+                if (!would_colide(rect, speed, 0)) {
+                    x += speed;
+                }
+            }
 
         boolean wasMoving = moving;
         moving = kh.upIsPressed || kh.downIsPressed || kh.leftIsPressed || kh.rightIsPressed;
@@ -109,14 +120,28 @@ public class Player extends Entity {
     public int getPlayerCol() {
         return (int)this.x / gp.scaledTileSize;
     }
-    public void draw(Graphics2D g2){
+
+    public class Rect extends Entity {
+        public Rect(int x, int y, int w, int h) { this.x = x; this.y = y; this.w = w; this.h = h;}
+    }
+    public boolean would_colide(Rect rect, double dx, double dy) {
+        return (this.x + dx < rect.x + rect.w &&
+                this.x + dy + this.w > rect.x &&
+                this.y + dx < rect.y + rect.h &&
+                this.y + dy + this.h > rect.y);
+    }
+    public void draw(Graphics2D g2) {
         BufferedImage image = currentFrames()[spriteNum];
         int w = image.getWidth() * gp.scale;
         int h = image.getHeight() * gp.scale;
         int drawX = (int) x - (w - gp.scaledTileSize) / 2;
         int drawY = (int) y - (h - gp.scaledTileSize) / 2;
+
         g2.drawImage(image, drawX, drawY, w, h, null);
-        g2.drawRect(drawX, drawY, w, h);
+        g2.drawRect((int)this.x , (int)this.y, (int)this.w, (int)this.h);
+        g2.drawRect((int)rect.x, (int)rect.y, (int)rect.w, (int)rect.h);
+
+
     }
 
 }

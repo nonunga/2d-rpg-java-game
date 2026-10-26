@@ -45,11 +45,9 @@ public class GamePanel extends JPanel implements Runnable {
 
         while (gameThread != null) {
             Tile currentTile = tm.getTile(player.getPlayerRow(), player.getPlayerCol());
-            System.out.println("Current tile " + currentTile.type);
 
             update();
-            repaint();
-            drawFps++;
+            repaint(); drawFps++;
 
             long remainingTime = nextDrawTime - System.nanoTime();
 
