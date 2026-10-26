@@ -14,26 +14,29 @@ public class Player extends Entity {
 
     GamePanel gp;
     KeyHandler kh;
+    public final int screenX;
+    public final int screenY;
 
     public Player (GamePanel gp, KeyHandler kh){
         this.gp = gp;
         this.kh = kh;
-        this.x = 10;
-        this.y = 10;
+        //pos del jugador en pantalla no del mundo.
+        this.screenX = gp.screenWidth/2 - (gp.scaledTileSize/2);
+        this.screenY = gp.screenHeight/2 - (gp.scaledTileSize/2);
         this.w = 20;
         this.h = 20;
-
-        this.speed = 250.0 / gp.fps; this.direction = Direction.DOWN;
+        setDefaultValues();
         getPlayerImage();
     }
 
     Rect rect = new Rect(300, 300, 100, 100);
 
     private void setDefaultValues () {
-        //player default pos
-        x = 100;
-        y = 100;
-        speed = 250.0 / gp.fps;
+        //spawn mapa 2
+        // poscicion en el mundo no pantalla
+        worldX = 12 * gp.scaledTileSize;
+        worldY = 27 * gp.scaledTileSize;
+        speed = 300.0 / gp.fps;
         direction = Direction.DOWN;
     }
     public void getPlayerImage(){
@@ -50,7 +53,7 @@ public class Player extends Entity {
     private BufferedImage[] loadFrames(String state, String dir, int count) {
         BufferedImage[] frames = new BufferedImage[count];
         for (int i = 0; i < count; i++) {
-            String fileName = "/player/" + state + "/" + state + "_" + dir + "_" + i + ".png";
+            String fileName = "/animations/player/" + state + "/" + state + "_" + dir + "_" + i + ".png";
             try {
                 InputStream stream = getClass().getResourceAsStream(fileName);
                 if (stream == null) {
@@ -65,27 +68,27 @@ public class Player extends Entity {
     }
 
     public void update(){
-            if (kh.upIsPressed) {
-                direction = Direction.UP;
-                if (!would_colide(rect, 0, -speed)) {
-                    y -= speed;
-                }
-            } else if (kh.downIsPressed) {
-                direction = Direction.DOWN;
-                if (!would_colide(rect, 0, speed)) {
-                    y += speed;
-                }
-            } else if (kh.leftIsPressed) {
-                direction = Direction.LEFT;
-                if (!would_colide(rect, -speed, 0)) {
-                    x -= speed;
-                }
-            }else if (kh.rightIsPressed){
-                direction = Direction.RIGHT;
-                if (!would_colide(rect, speed, 0)) {
-                    x += speed;
-                }
+        if (kh.upIsPressed) {
+            direction = Direction.UP;
+            if (!would_colide(rect, 0, -speed)) {
+                worldY -= speed;
             }
+        } else if (kh.downIsPressed) {
+            direction = Direction.DOWN;
+            if (!would_colide(rect, 0, speed)) {
+                worldY += speed;
+            }
+        } else if (kh.leftIsPressed) {
+            direction = Direction.LEFT;
+            if (!would_colide(rect, -speed, 0)) {
+                worldX -= speed;
+            }
+        }else if (kh.rightIsPressed){
+            direction = Direction.RIGHT;
+            if (!would_colide(rect, speed, 0)) {
+                worldX += speed;
+            }
+        }
 
         boolean wasMoving = moving;
         moving = kh.upIsPressed || kh.downIsPressed || kh.leftIsPressed || kh.rightIsPressed;
@@ -96,7 +99,7 @@ public class Player extends Entity {
             spriteCounter = 0;
         }
 
-
+        //ajuste por la diff de frames del walking y idle animation
         int animFps = moving ? 10 : 4;
         spriteCounter++;
         if (spriteCounter >= gp.fps / animFps) {
@@ -115,33 +118,33 @@ public class Player extends Entity {
     }
 
     public int getPlayerRow() {
-        return (int)this.y / gp.scaledTileSize;
+        return (int)this.worldY / gp.scaledTileSize;
     }
     public int getPlayerCol() {
-        return (int)this.x / gp.scaledTileSize;
+        return (int)this.worldX / gp.scaledTileSize;
     }
 
     public class Rect extends Entity {
-        public Rect(int x, int y, int w, int h) { this.x = x; this.y = y; this.w = w; this.h = h;}
+        public Rect(int x, int y, int w, int h) { this.worldX = x; this.worldY = y; this.w = w; this.h = h;}
     }
     public boolean would_colide(Rect rect, double dx, double dy) {
-        return (this.x + dx < rect.x + rect.w &&
-                this.x + dy + this.w > rect.x &&
-                this.y + dx < rect.y + rect.h &&
-                this.y + dy + this.h > rect.y);
+        return (this.worldX + dx < rect.worldX + rect.w &&
+                this.worldX + dy + this.w > rect.worldX &&
+                this.worldY + dx < rect.worldY + rect.h &&
+                this.worldY + dy + this.h > rect.worldY);
     }
-    public void draw(Graphics2D g2) {
+    //el player sprite mide 32x32 y el world tile 16x16
+    public void draw(Graphics2D g2){
         BufferedImage image = currentFrames()[spriteNum];
-        int w = image.getWidth() * gp.scale;
-        int h = image.getHeight() * gp.scale;
-        int drawX = (int) x - (w - gp.scaledTileSize) / 2;
-        int drawY = (int) y - (h - gp.scaledTileSize) / 2;
+        int w = image.getWidth() * gp.scale; // 160 con scale en 5
+        int h = image.getHeight() * gp.scale; // 160
 
-        g2.drawImage(image, drawX, drawY, w, h, null);
-        g2.drawRect((int)this.x , (int)this.y, (int)this.w, (int)this.h);
-        g2.drawRect((int)rect.x, (int)rect.y, (int)rect.w, (int)rect.h);
-
-
+        int x = screenX - (w - gp.scaledTileSize) / 2;
+        int y = screenY - (h - gp.scaledTileSize) / 2;
+        g2.drawImage(image, x, y, w, h, null);
+        g2.drawRect(x, y, w, h);
+        g2.drawRect(screenX, screenY, (int)this.w, (int)this.h);
+        g2.drawRect(((int) rect.worldX - (int) worldX) + screenX, ((int) rect.worldY - (int) worldY) + screenY, (int)rect.w, (int)rect.h);
     }
 
 }

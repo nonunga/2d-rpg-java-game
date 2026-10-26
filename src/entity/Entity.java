@@ -6,7 +6,8 @@ public class Entity {
     public enum Direction {
         UP, DOWN, LEFT, RIGHT
     }
-    public double x,y;
+
+    public double worldX,worldY;
     public double w, h;
     public double speed;
     public BufferedImage[] walkUp, walkDown, walkLeft, walkRight;

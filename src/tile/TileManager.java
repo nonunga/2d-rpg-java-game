@@ -11,28 +11,131 @@ import java.util.Objects;
 
 public class TileManager {
     GamePanel gp;
-    Tile[] tilesArray;
-    Tile [][] mapTiles;
+    Tile[] tiles;
+    int[][] mapMatrix;
+
     public TileManager(GamePanel gp) {
         this.gp = gp;
-        tilesArray = new Tile[10];
-        mapTiles = new Tile[gp.maxScreenCol][gp.maxScreenRow];
+        tiles = new Tile[100];
+        mapMatrix = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
-        loadMapFile("/maps/map01.txt");
+        loadMapFile("/maps/map02.txt");
     }
     public Tile getTile (int row, int col) {
-        return mapTiles[col][row];
+        return tiles[mapMatrix[col][row]];
     }
     public void getTileImage(){
         try {
-            tilesArray[0] = new Tile(Tile.Type.GRASS);
-            tilesArray[0].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/grass.png")));
+            tiles[0] = new Tile(Tile.Type.GRASS);
+            tiles[0].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass/grass.png")));
 
-            tilesArray[1] = new Tile(Tile.Type.WATER);
-            tilesArray[1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/water.png")));
+            tiles[1] = new Tile(Tile.Type.DIRT);
+            tiles[1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass/dirt_corner_nw.png")));
 
-            tilesArray[2] = new Tile(Tile.Type.DIRT);
-            tilesArray[2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/wall.png")));
+            tiles[2] = new Tile(Tile.Type.DIRT);
+            tiles[2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass/dirt_edge_n.png")));
+
+            tiles[3] = new Tile(Tile.Type.DIRT);
+            tiles[3].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass/dirt_corner_ne.png")));
+
+            tiles[4] = new Tile(Tile.Type.DIRT);
+            tiles[4].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass/dirt_edge_w.png")));
+
+            tiles[5] = new Tile(Tile.Type.DIRT);
+            tiles[5].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass/dirt_center.png")));
+
+            tiles[6] = new Tile(Tile.Type.DIRT);
+            tiles[6].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass/dirt_edge_e.png")));
+
+            tiles[7] = new Tile(Tile.Type.DIRT);
+            tiles[7].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass/dirt_corner_sw.png")));
+
+            tiles[8] = new Tile(Tile.Type.DIRT);
+            tiles[8].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass/dirt_edge_s.png")));
+
+            tiles[9] = new Tile(Tile.Type.DIRT);
+            tiles[9].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass/dirt_corner_se.png")));
+
+            tiles[10] = new Tile(Tile.Type.WATER);
+            tiles[10].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_water/lake_corner_nw.png")));
+
+            tiles[11] = new Tile(Tile.Type.WATER);
+            tiles[11].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_water/lake_edge_n.png")));
+
+            tiles[12] = new Tile(Tile.Type.WATER);
+            tiles[12].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_water/lake_corner_ne.png")));
+
+            tiles[13] = new Tile(Tile.Type.WATER);
+            tiles[13].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_water/lake_edge_w.png")));
+
+            tiles[14] = new Tile(Tile.Type.WATER);
+            tiles[14].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_water/lake_center.png")));
+
+            tiles[15] = new Tile(Tile.Type.WATER);
+            tiles[15].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_water/lake_edge_e.png")));
+
+            tiles[16] = new Tile(Tile.Type.WATER);
+            tiles[16].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_water/lake_corner_sw.png")));
+
+            tiles[17] = new Tile(Tile.Type.WATER);
+            tiles[17].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_water/lake_edge_s.png")));
+
+            tiles[18] = new Tile(Tile.Type.WATER);
+            tiles[18].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_water/lake_corner_se.png")));
+
+            tiles[19] = new Tile(Tile.Type.GRASS);
+            tiles[19].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_cliff/plateau_corner_nw.png")));
+
+            tiles[20] = new Tile(Tile.Type.GRASS);
+            tiles[20].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_cliff/plateau_edge_n.png")));
+
+            tiles[21] = new Tile(Tile.Type.GRASS);
+            tiles[21].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_cliff/plateau_corner_ne.png")));
+
+            tiles[22] = new Tile(Tile.Type.GRASS);
+            tiles[22].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_cliff/plateau_edge_w.png")));
+
+            tiles[23] = new Tile(Tile.Type.GRASS);
+            tiles[23].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_cliff/plateau_center.png")));
+
+            tiles[24] = new Tile(Tile.Type.GRASS);
+            tiles[24].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_cliff/plateau_edge_e.png")));
+
+            tiles[25] = new Tile(Tile.Type.GRASS);
+            tiles[25].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_cliff/plateau_corner_sw.png")));
+
+            tiles[26] = new Tile(Tile.Type.GRASS);
+            tiles[26].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_cliff/plateau_edge_s.png")));
+
+            tiles[27] = new Tile(Tile.Type.GRASS);
+            tiles[27].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_cliff/plateau_corner_se.png")));
+
+            tiles[28] = new Tile(Tile.Type.DIRT);
+            tiles[28].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_cliff/base_dry_left.png")));
+
+            tiles[29] = new Tile(Tile.Type.DIRT);
+            tiles[29].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_cliff/base_dry_middle.png")));
+
+            tiles[30] = new Tile(Tile.Type.DIRT);
+            tiles[30].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_cliff/base_dry_right.png")));
+
+            tiles[31] = new Tile(Tile.Type.DIRT);
+            tiles[31].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass/dirt_path_h.png")));
+
+            tiles[32] = new Tile(Tile.Type.DIRT);
+            tiles[32].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass/dirt_path_v.png")));
+
+            tiles[33] = new Tile(Tile.Type.DIRT);
+            tiles[33].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass/dirt_path_h_end_e.png")));
+
+            tiles[34] = new Tile(Tile.Type.DIRT);
+            tiles[34].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass/dirt_inner_ne_se.png")));
+
+            tiles[35] = new Tile(Tile.Type.DIRT);
+            tiles[35].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass/dirt_inner_se_sw.png")));
+
+            tiles[36] = new Tile(Tile.Type.WATER);
+            tiles[36].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/summer/grass_water/lake_inner_nw.png")));
         } catch (Exception e){e.printStackTrace();}
     }
 
@@ -41,12 +144,13 @@ public class TileManager {
             InputStream in = getClass().getResourceAsStream(fileName);
             assert in != null;
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            for (int row = 0; row < gp.maxScreenRow; row++) {
+
+            for (int row=0; row < gp.maxWorldRow; row++) {
                 String line = br.readLine();
-                for (int col = 0; col < gp.maxScreenCol; col++) {
-                    String[] mapTileData = line.split(" ");
-                    int intTile = Integer.parseInt(mapTileData[col]);
-                    mapTiles[col][row] = tilesArray[intTile];
+                String[] mapTileData = line.split(" ");
+                for (int col=0; col < gp.maxWorldCol; col++) {
+                    int tileNumType = Integer.parseInt(mapTileData[col]);
+                    mapMatrix[col][row] = tileNumType;
                 }
             }
             br.close();
@@ -55,13 +159,32 @@ public class TileManager {
             e.printStackTrace();
         }
     }
-    public void draw(Graphics g) {
-       for (int row = 0, y = 0; row < gp.maxScreenRow; row++, y += gp.scaledTileSize) {
-           for (int col = 0, x = 0; col < gp.maxScreenCol; col++, x+= gp.scaledTileSize) {
-               Tile currentTile = mapTiles[col][row];
-               g.drawImage(currentTile.image, x, y, gp.scaledTileSize, gp.scaledTileSize, null);
-               g.drawRect(x, y, gp.scaledTileSize, gp.scaledTileSize);
-           }
-       }
+
+    public void draw(Graphics g){
+        for (int worldRow = 0; worldRow < gp.maxWorldRow; worldRow++) {
+            for (int worldCol = 0; worldCol < gp.maxWorldCol; worldCol++) {
+                int tileType = mapMatrix[worldCol][worldRow];
+
+                //world pos del tile en pixeles
+                int tileX = worldCol * gp.scaledTileSize;
+                int tileY = worldRow * gp.scaledTileSize;
+
+                //screen pos del tile relativo al player
+                int screenX = (tileX - (int) gp.player.worldX) + gp.player.screenX;
+                int screenY = (tileY - (int) gp.player.worldY) + gp.player.screenY;
+                //grid culling-ish
+                //calcula si el tile esta dentro del frame.
+                //usando el spawn de ej: 960px - gp.player.screenX (600px) = 360px = borde del frame.
+                //dibujar si tileX > 360px
+                //le sumo scaledTileSize para validar donde termina el tile no donde empieza. izq a derech.
+                if (tileX + gp.scaledTileSize > gp.player.worldX - gp.player.screenX &&
+                        tileX - gp.scaledTileSize < gp.player.worldX + gp.player.screenX &&
+                        tileY + gp.scaledTileSize > gp.player.worldY - gp.player.screenY &&
+                        tileY - gp.scaledTileSize < gp.player.worldY + gp.player.screenY){
+                    g.drawImage(tiles[tileType].image,screenX,screenY,gp.scaledTileSize,gp.scaledTileSize,null);
+                    g.drawRect(screenX,screenY,gp.scaledTileSize,gp.scaledTileSize);
+                }
+            }
+        }
     }
 }
