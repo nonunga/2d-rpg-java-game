@@ -18,7 +18,9 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
 
-    public final int fps = 144;
+    public volatile int fps = 144;
+
+    private int fpsCounter;
 
     TileManager tm = new TileManager(this);
     KeyHandler kh = new KeyHandler();
@@ -65,7 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if ((System.nanoTime() - timer) >= 1_000_000_000L){
-                System.out.println("FPS: " + drawFps);
+                fpsCounter = drawFps;
                 drawFps=0;
                 timer = System.nanoTime();
             }
@@ -83,6 +85,17 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g.create();
         tm.draw(g2);
         player.draw(g2);
+        g2.setColor(Color.white);
+        g2.setFont(new Font("Arial", Font.BOLD, 20));
+        g2.drawString("FPS: " + fpsCounter,20,30 );
+        String playerPos = (int) player.worldX + "," + (int) player.worldY;
+        int textWidth = g2.getFontMetrics().stringWidth(playerPos);
+        int textX = screenWidth - textWidth - 12;
+        g2.drawString(playerPos,  textX,30);
+        String tileMatrixPos = (int) player.worldX / scaledTileSize + "," + (int) player.worldY / scaledTileSize;
+        int textWidth2 = g2.getFontMetrics().stringWidth(tileMatrixPos);
+        int textX2 = screenWidth - textWidth2 - 12;
+        g2.drawString(tileMatrixPos, textX2,50);
         g2.dispose();
 
     }

@@ -115,6 +115,7 @@ public class Player extends Entity {
         int x = screenX - (w - gp.scaledTileSize) / 2;
         int y = screenY - (h - gp.scaledTileSize) / 2;
         g2.drawImage(image, x, y, w, h, null);
+        g2.drawRect(x, y, w, h);
     }
 
 }

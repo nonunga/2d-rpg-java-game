@@ -181,6 +181,7 @@ public class TileManager {
                         tileY + gp.scaledTileSize > gp.player.worldY - gp.player.screenY &&
                         tileY - gp.scaledTileSize < gp.player.worldY + gp.player.screenY){
                     g.drawImage(tiles[tileType].image,screenX,screenY,gp.scaledTileSize,gp.scaledTileSize,null);
+                    g.drawRect(screenX,screenY,gp.scaledTileSize,gp.scaledTileSize);
                 }
             }
         }
