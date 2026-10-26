@@ -92,6 +92,9 @@ public class GamePanel extends JPanel implements Runnable {
         //player tileMatrixPos top right
         String tileMatrixPos = (int) player.worldX / scaledTileSize + "," + (int) player.worldY / scaledTileSize;
         alignTextToRight(g2,tileMatrixPos,50);
+
+        String blockUnder = "Standing on: " + tm.getTile(player.getPlayerRow(), player.getPlayerCol()).type;
+        alignTextToRight(g2,blockUnder,75);
     }
 
     private void alignTextToRight(Graphics2D g2, String text, int y){
