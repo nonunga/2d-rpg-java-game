@@ -1,6 +1,7 @@
 package main;
 
 import entity.Player;
+import tile.Tile;
 import tile.TileManager;
 
 import javax.swing.JPanel;
@@ -49,9 +50,10 @@ public class GamePanel extends JPanel implements Runnable {
         int drawFps = 0;
 
         while (gameThread != null) {
+            Tile currentTile = tm.getTile(player.getPlayerRow(), player.getPlayerCol());
+
             update();
-            repaint();
-            drawFps++;
+            repaint(); drawFps++;
 
             long remainingTime = nextDrawTime - System.nanoTime();
 
@@ -90,6 +92,9 @@ public class GamePanel extends JPanel implements Runnable {
         //player tileMatrixPos top right
         String tileMatrixPos = (int) player.worldX / scaledTileSize + "," + (int) player.worldY / scaledTileSize;
         alignTextToRight(g2,tileMatrixPos,50);
+
+        String blockUnder = "Standing on: " + tm.getTile(player.getPlayerRow(), player.getPlayerCol()).type;
+        alignTextToRight(g2,blockUnder,75);
     }
 
     private void alignTextToRight(Graphics2D g2, String text, int y){

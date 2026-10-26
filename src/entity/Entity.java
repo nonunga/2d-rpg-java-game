@@ -8,6 +8,7 @@ public class Entity {
     }
 
     public double worldX,worldY;
+    public double w, h;
     public double speed;
     public BufferedImage[] walkUp, walkDown, walkLeft, walkRight;
     public BufferedImage[] idleUp, idleDown, idleLeft, idleRight;
